@@ -1,0 +1,235 @@
+<div class="ui pointing secondary menu">
+    <a class="item active" data-tab="tab-activos">Recibos de Sueldo</a>
+    <div class="item right">
+        <i class="glyphicon refresh icon" ng-click="end = undefined;star=undefined;pesquisar=undefined"></i>
+        <daterangepciker></daterangepciker>
+
+    </div>
+
+
+</div>
+<div class="ui tab active " data-tab="tab-activos">
+    <!-- Tab Content !-->
+    <div class="ui  " style="padding: 0em 1em 1em 1em ;">
+        <div class="ui small blue inverted top attached menu">
+
+            <div class="ui dropdown icon item">
+                <i class="wrench icon"></i>
+                <div class="menu">
+                    <div class="item">
+                        <i class="dropdown icon"></i>
+                        <span class="text">Nuevo</span>
+                        <div class="menu">
+                            <div class="item" ng-click="editar(comprobante)" >Comprobante de Pago</div>
+
+                        </div>
+                    </div>
+
+                    <div class="item">Imprimir</div>
+                    <div class="divider"></div>
+                    <div class="header">
+                        Exportar
+                    </div>
+                    <div class="item "  >
+                        Excel...
+                    </div>
+                    <div class="item" >
+                        PDF...
+
+                    </div>
+                    <div class="item" >
+                        PNG...
+
+                    </div>
+                </div>
+            </div>
+            <div class="right menu">
+                <div class="ui right aligned category search item">
+                    <div class="ui inverted icon input">
+                        <input  placeholder="Buscar ..." ng-model="pesquisar" type="text">
+                        <i class="search link icon"></i>
+                    </div>
+                    <div class="results"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ui bottom attached segment" ng-init="listaComprobantes()">
+
+
+
+
+
+
+
+
+            <table  class="ui blue striped sortable compact celled table"    style="font-size: smaller !important; " >
+                <thead style="font-size: small">
+
+                <tr style="font-family:'Arial Black';">
+                    <th ng-click="sortType ='fecha';sortReverse = !sortReverse">
+
+                        Fecha
+                        <i class="chevron up icon" ng-show="sortType == 'fecha' && !sortReverse" ></i>
+                        <i ng-show="sortType == 'fecha' && sortReverse" class="chevron down icon"></i>
+                    </th>
+                    <th ng-click="sortType ='empleado';sortReverse = !sortReverse">
+
+                        Empleado
+                        <i ng-show="sortType == 'empleado' && !sortReverse" class="chevron up icon"></i>
+                        <i ng-show="sortType == 'empleado' && sortReverse" class="chevron down icon"></i>
+
+                    </th>
+
+                    <th ng-click="sortType ='ptotal';sortReverse = !sortReverse">Pago Total
+                        <i ng-show="sortType == 'ptotal' && !sortReverse" class="chevron up icon"></i>
+                        <i ng-show="sortType == 'ptotal' && sortReverse" class="chevron down icon"></i>
+                    </th>
+
+                    <th ng-click="sortType ='deduccion';sortReverse = !sortReverse">Deducción
+                        <i ng-show="sortType == 'deduccion' && !sortReverse" class="chevron up icon"></i>
+                        <i ng-show="sortType == 'deduccion' && sortReverse" class="chevron down icon"></i>
+                    </th>
+                    <th ng-click="sortType ='neto';sortReverse = !sortReverse">Pago Neto
+                        <i ng-show="sortType == 'neto' && !sortReverse" class="chevron up icon"></i>
+                        <i ng-show="sortType == 'neto' && sortReverse" class="chevron down icon"></i>
+                    </th>
+
+                    <th colspan="2"></th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr dir-paginate="comprobante in recibos|orderBy:sortType:sortReverse|daterange:start:end:'comprobante'|filter:pesquisar|itemsPerPage:10"  ng-class="warningLevel(cliente)" >
+                    <td style="font-weight: bold">{{comprobante.fecha}}</td>
+                    <td>{{comprobante.nombre}}</td>
+                    <td>{{comprobante.ganancias|currency}}</td>
+
+                    <td>{{comprobante.deduccion|currency}}</td>
+                    <td>{{comprobante.pneto|currency}}</td>
+
+                    <td class="collapsing">
+
+                        <div class="item" ng-click="editar(comprobante)">
+
+                            <i class="popup glyphicon glyphicon-edit" data-content="Editar"></i>
+                        </div>
+
+                    </td>
+                    <td class="collapsing">
+
+                        <div class="item" ng-click="see(comprobante)">
+
+                            <i class="popup glyphicon glyphicon-eye-open" data-content="Ver"></i>
+                        </div>
+
+                    </td>
+                </tr>
+                </tbody>
+
+                <tfoot>
+                <tr>
+                    <th colspan="10">
+                        <dir-pagination-controls  boundary-links="true" template-url="../views/dirPagination.tpl.html" max-size="5" >
+                        </dir-pagination-controls>
+                    </th>
+                </tr>
+                </tfoot>
+
+            </table>
+        </div>
+
+
+
+
+
+
+
+
+    </div>
+</div>
+
+
+<!-- Modal Cadastro e Edição -->
+<div class="ui small modal" id="modalComprobante" tabindex="-1" role="dialog">
+
+    <div class="header">
+        Comprobante de Pago
+
+
+    </div>
+    <div class="content" >
+
+        <form name="comprobanteForm"   class="ui form comprobante">
+
+                <div class="five wide field">
+                    <label>Fecha</label>
+                    <input class="form-control" name="fecha" type="date" ng-model="comprobante.fecha" required>
+                </div>
+
+            <div class="two fields">
+                <div class="field">
+                    <label>Empleado</label>
+                    <div class="ui fluid search dropdown selection">
+                        <i class="dropdown icon"></i>
+                        <input tabindex="0" autocomplete="off" class="search">
+                        <div class="text">Empleado</div>
+                        <select ng-model="comprobante.id_trabajador" name="empleado">
+                            <option selected="selected" value="">Empleado</option>
+                            <option ng-repeat="trabajador in trabajadores track by trabajador.id" value="{{trabajador.id}}">{{trabajador.nombre}}</option>
+
+                        </select>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Pago Total</label>
+                    <input class="form-control" type="text" name="ganancias" ng-model="comprobante.ganancias" required>
+                </div>
+
+
+            </div>
+
+            <div class="ui segment">
+                <div class="field">
+                    <div class="ui toggle checkbox deduccion basecheckbox">
+                        <input class="hidden" tabindex="0" name="gift" type="checkbox">
+                        <label>Incluir Deducción por seguridad social</label>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="fields">
+
+                <div class="  field">
+                    <div class="ui red label">
+                        Deducción
+                        <div class="detail">{{(comprobante.ganancias*s_social)/100|currency}}</div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="fields">
+
+                <div class="field">
+                    <div class="ui teal label">
+                        Pago Neto
+                        <div class="detail">{{comprobante.ganancias-((comprobante.ganancias*s_social)/100)|currency}}</div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </form>
+
+    </div>
+    <div class="actions">
+        <div class="ui  button" ng-click="cerrar()">Cancelar</div>
+        <div class="ui primary button" ng-click="salvar()">Salvar</div>
+    </div>
+
+</div>
+
+</div>
+

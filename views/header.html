@@ -1,0 +1,99 @@
+    <div class="container noPrint">
+
+        <!--/.navbar-collapse -->
+
+        <div class="ui small top fixed compact menu inverted">
+
+            <a class="item" href="#welcome" data-ng-class="{active:isActive('/welcome')}">
+                <i class="line chart icon"></i>
+                Sumario
+            </a>
+
+            <a class="item" href="#informes" data-ng-class="{active:isActive('/informes')}">
+                <i class="print icon"></i>
+                Informes
+
+            </a>
+
+            <a class="item" href="#clientes" data-ng-class="{active:isActive('/clientes')}">
+                <i class="spy icon"></i>
+                Clientes
+
+            </a>
+
+
+
+            <div tabindex="0" class="ui dropdown item">
+                Ingresos y Gastos <i class="dropdown icon"></i>
+                <div tabindex="-1" class="menu">
+                <!--    <a class="item" href="#cuentas" data-ng-class="{active:isActive('/cuentas')}">
+                        <img clas="menu" src="../media/assets/images/business-37.png">
+                        Cuentas de Efectivo
+                    </a>  -->
+                    <a class="item" href="#factura" data-ng-class="{active:isActive('/factura')}">
+                        <img clas="menu" src="../media/assets/images/communication-55.png">
+                        Facturas
+                    </a>
+                    <a class="item" href="#asientos" data-ng-class="{active:isActive('/asientos')}">
+                        <img clas="menu" src="../media/assets/images/design-6.png">
+                        Asientos Diarios
+                    </a>
+
+                </div>
+            </div>
+            <div tabindex="0" class="ui dropdown item">
+                Recursos Humanos <i class="dropdown icon"></i>
+                <div tabindex="-1" class="menu">
+
+                    <a class="item" href="#trabajador" data-ng-class="{active:isActive('/trabajador')}">
+                        <img clas="menu" src="../media/assets/images/users-30.png">
+                        Empleados
+                    </a>
+                    <a class="item" href="#recibos" data-ng-class="{active:isActive('/recibos')}">
+                        <img clas="menu" src="../media/assets/images/business-48.png">
+                        Recivos de Sueldo
+                    </a>
+
+
+                </div>
+            </div>
+            <div tabindex="0" class="ui dropdown item">
+                Inventarios <i class="dropdown icon"></i>
+                <div tabindex="-1" class="menu">
+                    <a class="item" href="#insumos" data-ng-class="{active:isActive('/insumos')}">
+                        <img clas="menu" src="../media/assets/images/business-86.png">
+                        Insumos
+                    </a>
+                    <a class="item" href="#activos" data-ng-class="{active:isActive('/activos')}">
+                        <img clas="menu" src="../media/assets/images/content-1.png">
+                        Activos Fijos
+                    </a>
+                    <a class="item" href="#utiles" data-ng-class="{active:isActive('/utiles')}">
+                        <i class="calculator icon"></i>
+                        Utiles y Herramientas
+                    </a>
+                </div>
+            </div>
+
+
+
+
+
+
+            <div class="right menu">
+                <a class="item" href="#ajustes" data-ng-class="{active:isActive('/ajustes')}">
+                    <i class="setting icon"></i>
+                    Ajustes
+                </a>
+                <a class="item" href="#clientes" data-ng-class="{active:isActive('/alertas')}">
+                    <i class="alarm icon"></i>
+
+                    Alertas
+                    <div class="ui red label" ng-init="calerts()">{{alerts}}</div>
+                </a>
+            </div>
+        </div>
+
+
+    </div>
+

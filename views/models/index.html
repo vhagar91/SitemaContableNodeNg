@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Factura</title>
+  <meta charset='utf-8'>
+
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <script type="text/javascript" src="../../js/lib/angular.min.js"></script>
+  <script type="text/javascript" src="../../js/lib/moment.min.js"></script>
+  <script type="text/javascript" src="js/main.js"></script>
+</head>
+<body ng-app="invoicing" ng-controller="scanCtrl" >
+<div class="container" width="800px" id="invoice" >
+  <img class="img-thumbnail" local-src="{{foto.archivo}}">
+
+  <div class="row noPrint actions">
+    <div class="panel panel-default">
+
+      <div class="panel-heading">
+
+        <table style="border-collapse: separate">
+          <tr>
+            <td>
+              <span class="header">Factura</span>
+            </td>
+            <td style="border-right: 1px solid #ddd; padding: 0px 10px">
+
+              <button  ng-click="printInfo()" class="btn btn-default btn-sm" style="font-weight: bold"
+              >Imprimir</button>
+
+
+
+            </td>
+            <td style="border-left: 1px solid #fff">
+              <button class="btn btn-default btn-sm" style="font-weight: bold; margin-left: 10px"
+                      data-toggle="modal" data-target="#email-modal">Correo electrónico</button>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+</div></body>
+</html>

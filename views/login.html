@@ -1,0 +1,61 @@
+
+    <!--- Example CSS -->
+    <style type="text/css">
+        body {
+            background-color: #DADADA;
+        }
+        body > .grid {
+            height: 100%;
+        }
+        .image {
+            margin-top: -100px;
+        }
+        .column {
+            max-width: 450px;
+        }
+    </style>
+
+
+<div class="ui middle aligned center aligned grid" style="padding-top: 10%" ng-controller="loginControllers">
+    <div class="column">
+        <h2 class="ui teal icon header">
+            <i  class="users icon"></i>
+            <div class="content">
+                Entre con su cuenta
+            </div>
+        </h2>
+        <form class="ui form login"   autocapitalize="off" accept-charset="utf-8" enctype="multipart/form-data">
+
+            <div class="ui segment">
+
+
+                <div class="field">
+                    <div class="ui left icon input">
+                        <i class="user icon"></i>
+                        <input type="text" id="id_username" name="username" ng-model="name" placeholder='Usuario'>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui left icon input">
+                        <i class="lock icon"></i>
+                        <input type="password" id="id_password" name="password" ng-model="password" placeholder="Contraseña">
+                    </div>
+                </div>
+                <button class="ui fluid large teal submit button" ng-click="entrar()">Entrar</button>
+
+
+            </div>
+
+
+
+        </form>
+
+
+
+    </div>
+</div>
+
+
+
+
+

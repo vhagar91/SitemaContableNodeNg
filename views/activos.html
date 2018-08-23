@@ -1,0 +1,338 @@
+
+
+<div class="ui pointing secondary menu">
+    <a class="item active" data-tab="tab-activos"  >Activos Fijos Tangibles</a>
+    <a class="item" data-tab="tab-inactivos">Activos Fijos Intangibles</a>
+    <div class="item right" >
+        <i class="glyphicon refresh icon" ng-click="end = undefined;star=undefined;pesquisar=undefined;buscar=undefined"></i>
+        <daterangepciker></daterangepciker>
+    </div>
+
+
+
+</div>
+<div class="ui tab active " data-tab="tab-activos">
+    <!-- Tab Content !-->
+
+    <div class="ui  " style="padding: 0em 1em 1em 1em ;">
+        <div class="ui small blue inverted top attached menu">
+
+            <div class="ui dropdown icon item">
+                <i class="wrench icon"></i>
+                <div class="menu">
+                    <div class="item">
+                        <i class="dropdown icon"></i>
+                        <span class="text">Nuevo</span>
+                        <div class="menu">
+                            <div class="item" ng-click="editar(activo,1)" >Activo Tangible</div>
+
+                        </div>
+                    </div>
+
+                    <div class="item">Imprimir</div>
+                    <div class="divider"></div>
+                    <div class="header">
+                        Exportar
+                    </div>
+                    <div class="item" >
+                        Excel...
+                    </div>
+                    <div class="item">
+                        PDF...
+                    </div>
+                </div>
+            </div>
+            <div class="right menu">
+                <div class="ui right aligned category search item">
+                    <div class="ui inverted icon input">
+                        <input  placeholder="Buscar ..." ng-model="pesquisar" type="text">
+                        <i class="search link icon"></i>
+                    </div>
+                    <div class="results"></div>
+                </div>
+            </div>
+        </div>
+        <div class="ui bottom attached segment">
+            <table class="ui blue striped sortable compact  celled table" ng-init="listaActivos()" style="font-size: smaller !important; " >
+                <thead>
+
+                <tr style="font-family:'Arial Black';">
+                    <th ng-click="sortType ='codigo';sortReverse = !sortReverse">
+
+                        Código
+                        <i class="chevron up icon" ng-show="sortType == 'codigo' && !sortReverse" ></i>
+                        <i ng-show="sortType == 'codigo' && sortReverse" class="chevron down icon"></i>
+                    </th>
+
+                    <th ng-click="sortType ='nombre';sortReverse = !sortReverse">
+
+                        Nombre
+                        <i class="chevron up icon" ng-show="sortType == 'nombre' && !sortReverse" ></i>
+                        <i ng-show="sortType == 'nombre' && sortReverse" class="chevron down icon"></i>
+                    </th>
+                    <th>Descripción</th>
+                    <th>Fecha de Compra</th>
+                    <th>Costo</th>
+
+
+                    <th>Depreciación</th>
+                    <th>Valor contable</th>
+                    <th colspan="2"></th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr dir-paginate="activo in activos|orderBy:sortType:sortReverse|daterange:start:end:'activo'|filter:pesquisar|itemsPerPage:10" pagination-id="act" >
+                    <td style="font-weight: bold">{{activo.codigo}}</td>
+                    <td>{{activo.nombre}}</td>
+                    <td>{{activo.descripcion}}</td>
+                    <td>{{activo.f_compra}}</td>
+                    <td>{{activo.costo| currency}}</td>
+
+                    <td>{{calcsyd(activo)| currency}}</td>
+                    <td>{{activo.costo-calcsyd(activo)| currency}}</td>
+                    <td class="collapsing">
+                        <div class="item" ng-click="editar(activo)">
+                            <i class="popup glyphicon glyphicon-edit" data-content="Editar"></i>
+                        </div>
+
+
+                    </td>
+                    <td class="collapsing">
+                    <div class="item" ng-click="excluir(activo)">
+                        <i class="popup glyphicon glyphicon-trash" data-content="Eliminar"></i>
+                    </div>
+                    </td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+
+                    <th colspan="10" >
+                        <dir-pagination-controls pagination-id="act" boundary-links="true" template-url="../views/dirPagination.tpl.html" max-size="5" >
+                        </dir-pagination-controls>
+                    </th>
+                </tr>
+                </tfoot>
+
+            </table>
+
+        </div>
+
+
+
+
+
+
+    </div>
+</div>
+<div class="ui tab  " data-tab="tab-inactivos">
+    <!-- Tab Content !-->
+    <div class="ui  " style="padding: 0em 1em 1em 1em ;">
+        <div class="ui small blue inverted top attached menu">
+
+            <div class="ui dropdown icon item">
+                <i class="wrench icon"></i>
+                <div class="menu">
+                    <div class="item">
+                        <i class="dropdown icon"></i>
+                        <span class="text">Nuevo</span>
+                        <div class="menu">
+                            <div class="item" ng-click="editar(activo,0)" >Activo Intangible</div>
+
+                        </div>
+                    </div>
+
+                    <div class="item">Edit Permissions</div>
+                    <div class="divider"></div>
+                    <div class="header">
+                        Exportar
+                    </div>
+                    <div class="item">
+                        Excel...
+                    </div>
+                    <div class="item">
+                        PDF...
+                    </div>
+                </div>
+            </div>
+            <div class="right menu">
+                <div class="ui right aligned category search item">
+                    <div class="ui inverted icon input">
+                        <input  placeholder="Buscar ..." ng-model="buscar" type="text">
+                        <i class="search link icon"></i>
+                    </div>
+                    <div class="results"></div>
+                </div>
+            </div>
+        </div>
+        <div class="ui bottom attached segment">
+            <table class="ui blue striped sortable compact  celled table" ng-init="listaActivosI()" style="font-size: smaller !important; " >
+                <thead>
+
+                <tr style="font-family:'Arial Black';">
+                    <th ng-click="sortType ='codigo';sortReverse = !sortReverse">
+
+                        Código
+                        <i class="chevron up icon" ng-show="sortType == 'codigo' && !sortReverse" ></i>
+                        <i ng-show="sortType == 'codigo' && sortReverse" class="chevron down icon"></i>
+                    </th>
+
+                    <th ng-click="sortType ='nombre';sortReverse = !sortReverse">
+
+                        Nombre
+                        <i class="chevron up icon" ng-show="sortType == 'nombre' && !sortReverse" ></i>
+                        <i ng-show="sortType == 'nombre' && sortReverse" class="chevron down icon"></i>
+                    </th>
+                    <th>Descripción</th>
+                    <th>Fecha de Compra</th>
+                    <th>Costo</th>
+
+                    <th>Amortiguación</th>
+                    <th>Valor contable</th>
+                    <th colspan="2"></th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr dir-paginate="activo in activosintangibles|orderBy:sortType:sortReverse|daterange:start:end:'activo'|filter:buscar|itemsPerPage:10" pagination-id="a" >
+                    <td style="font-weight: bold">{{activo.codigo}}</td>
+                    <td>{{activo.nombre}}</td>
+                    <td>{{activo.descripcion}}</td>
+                    <td>{{activo.f_compra}}</td>
+                    <td>{{activo.costo | currency}}</td>
+
+
+                    <td>{{calcsyd(activo)| currency}}</td>
+                    <td>{{activo.costo-calcsyd(activo)| currency}}</td>
+                    <td class="collapsing">
+                        <div class="item" ng-click="editar(activo)" >
+
+                            <i class="popup glyphicon glyphicon-edit" data-content="Editar"></i>
+                        </div>
+
+
+
+                    </td>
+                    <td class="collapsing">
+                        <div class="item" ng-click="excluir(activo)">
+
+                            <i class="popup glyphicon glyphicon-trash" data-content="Eliminar"></i>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+
+                    <th colspan="10" >
+                        <dir-pagination-controls pagination-id="a" boundary-links="true" template-url="../views/dirPagination.tpl.html" max-size="5" >
+                        </dir-pagination-controls>
+                    </th>
+                </tr>
+                </tfoot>
+
+            </table>
+
+        </div>
+
+
+
+
+
+    </div>
+
+</div>
+
+
+<!-- Modal Cadastro e Edição -->
+<div class="ui small modal" id="modalActivo" tabindex="-1" role="dialog">
+
+    <div class="header">
+        Activo Fijo
+
+    </div>
+    <div class="content">
+        <form name="activosForm"   class="ui form activo">
+            <div class="two fields">
+                <div class="field">
+                    <label>Nombre</label>
+                    <input class="form-control" name="nombre" type="text" ng-model="activo.nombre" >
+                </div>
+                <div class="field">
+                    <label>Código</label>
+                    <input class="form-control" name="codigo" type="text" ng-model="activo.codigo" >
+                </div>
+
+            </div>
+            <div class="two fields">
+                <div class="field">
+                    <label>Costo</label>
+                    <div class="ui right labeled input">
+
+                        <input class="form-control" type="text" name="costo" ng-model="activo.costo" >
+                        <div class="ui label">$</div>
+                    </div>
+
+                </div>
+                <div class="field">
+                    <label>Taza de Depreciación/Amortiguación</label>
+                    <div class="ui right labeled input">
+
+                        <input class="form-control" name="rescate" type="text" ng-model="activo.t_depre" >
+                        <div class="ui label">%</div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="two fields">
+                <div class="field">
+                    <label>Fecha de Compra</label>
+                    <input class="form-control" type="date" name="fecha" ng-model="activo.f_compra" >
+                </div>
+                <div class="field">
+                    <label>Años de Vida</label>
+                    <input class="form-control" name="vida" type="text" ng-model="activo.vida" >
+                </div>
+
+            </div>
+            <div class="field">
+
+                    <label>Descripción</label>
+                    <textarea name="descripcion" ng-model="activo.descripcion" ></textarea>
+
+
+
+            </div>
+
+
+
+
+
+        </form>
+
+    </div>
+    <div class="actions">
+        <div class="ui  button" ng-click="cerrar()">Cancelar</div>
+        <div class="ui primary button" ng-click="salvar()">Salvar</div>
+    </div>
+</div>
+
+
+<script>
+    $(document)
+            .ready(function() {
+
+                $('.ui.pointing.secondary.menu .item').tab();
+
+
+
+            })
+    ;
+</script>
+<!-- Modal Cadastro e Edição -->
+
+
+
+

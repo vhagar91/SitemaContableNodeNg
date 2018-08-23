@@ -1,0 +1,204 @@
+<div class="ui pointing secondary menu">
+    <a class="item active" data-tab="tab-activos">Insumos</a>
+
+    <div class="item right">
+        <i class="glyphicon refresh icon" ng-click="end = undefined;star=undefined;pesquisar=undefined"></i>
+        <daterangepciker></daterangepciker>
+
+    </div>
+
+
+</div>
+<div class="ui tab active " data-tab="tab-activos">
+    <!-- Tab Content !-->
+    <div class="ui  " style="padding: 0em 1em 1em 1em ;">
+        <div class="ui small blue inverted top attached menu">
+
+            <div class="ui dropdown icon item">
+                <i class="wrench icon"></i>
+                <div class="menu">
+                    <div class="item">
+                        <i class="dropdown icon"></i>
+                        <span class="text">Nuevo</span>
+                        <div class="menu">
+                            <div class="item" ng-click="editar(insumo)" >Insumo</div>
+
+                        </div>
+                    </div>
+
+                    <div class="item">Imprimir</div>
+                    <div class="divider"></div>
+                    <div class="header">
+                        Exportar
+                    </div>
+                    <div class="item">
+                        Excel...
+                    </div>
+                    <div class="item">
+                        PDF...
+                    </div>
+                </div>
+            </div>
+            <div class="right menu">
+                <div class="ui right aligned category search item">
+                    <div class="ui inverted icon input">
+                        <input  placeholder="Buscar ..." ng-model="pesquisar" type="text">
+                        <i class="search link icon"></i>
+                    </div>
+                    <div class="results"></div>
+                </div>
+            </div>
+        </div>
+        <div class="ui bottom attached segment">
+            <table class="ui blue striped sortable compact  celled table" ng-init="listaInsumos()" style="font-size: smaller !important; " >
+                <thead>
+
+                <tr style="font-family:'Arial Black';">
+                    <th ng-click="sortType ='nombre';sortReverse = !sortReverse">
+
+                        Nombre
+                        <i class="chevron up icon" ng-show="sortType == 'nombre' && !sortReverse" ></i>
+                        <i ng-show="sortType == 'nombre' && sortReverse" class="chevron down icon"></i>
+                    </th>
+                    <th ng-click="sortType ='f_compra';sortReverse = !sortReverse">
+
+                        Fecha de Compra
+                        <i class="chevron up icon" ng-show="sortType == 'f_compra' && !sortReverse" ></i>
+                        <i ng-show="sortType == 'f_compra' && sortReverse" class="chevron down icon"></i>
+                    </th>
+                    <th ng-click="sortType ='unidad';sortReverse = !sortReverse">
+
+                        Unidad de Medida
+                        <i ng-show="sortType == 'unidad' && !sortReverse" class="chevron up icon"></i>
+                        <i ng-show="sortType == 'unidad' && sortReverse" class="chevron down icon"></i>
+
+                    </th>
+
+
+                    <th ng-click="sortType ='precio';sortReverse = !sortReverse">Precio de Costo x Unidad($)
+                        <i ng-show="sortType == 'precio' && !sortReverse" class="chevron up icon"></i>
+                        <i ng-show="sortType == 'precio' && sortReverse" class="chevron down icon"></i>
+                    </th>
+                    <th ng-click="sortType ='preciov';sortReverse = !sortReverse">Precio de Venta x Unidad($)
+                        <i ng-show="sortType == 'preciov' && !sortReverse" class="chevron up icon"></i>
+                        <i ng-show="sortType == 'preciov' && sortReverse" class="chevron down icon"></i>
+                    </th>
+
+                    <th colspan="2"></th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr  dir-paginate="insumo in insumos|orderBy:sortType:sortReverse|daterange:start:end:'util'|filter:pesquisar|itemsPerPage:10" >
+                    <td style="font-weight: bold">{{insumo.nombre}}</td>
+                    <td>{{insumo.f_compra}}</td>
+                    <td>{{insumo.unidad}}</td>
+
+                    <td>{{insumo.precio| currency}}</td>
+                    <td>{{insumo.precio_venta| currency}}</td>
+
+                    <td class="collapsing">
+                        <div class="item" ng-click="editar(insumo)">
+                            <i class="popup glyphicon glyphicon-edit" data-content="Editar"></i>
+                        </div>
+                    </td>
+                    <td class="collapsing">
+                        <div class="item" ng-click="excluir(insumo)">
+                            <i class="popup glyphicon glyphicon-trash" data-content="Eliminar"></i>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+
+                    <th colspan="10" class="text-center">
+                        <dir-pagination-controls  boundary-links="true" template-url="../views/dirPagination.tpl.html" max-size="5" >
+                        </dir-pagination-controls>
+                    </th>
+                </tr>
+                </tfoot>
+
+            </table>
+
+
+
+
+
+
+
+
+
+        </div>
+    </div>
+
+
+    <!-- Modal Cadastro e Edição -->
+    <div class="ui small modal" id="modalInsumo" tabindex="-1" role="dialog">
+
+        <div class="header">
+            Insumo
+
+        </div>
+        <div class="content">
+            <form name="insumoForm"   class="ui form insumo">
+                <div class="two fields">
+                    <div class="field">
+                        <label>Nombre</label>
+                        <input class="form-control" name="nombre" type="text" ng-model="insumo.nombre" >
+                    </div>
+                    <div class="field">
+                        <label>Fecha de Compra</label>
+                        <input class="form-control" name="f_compra" type="date" ng-model="insumo.f_compra" >
+                    </div>
+
+                </div>
+               <div class="three fields">
+                   <div class="field">
+                       <label>Nombre de la Unidad</label>
+                       <input class="form-control" placeholder="Opcional" name="unidad" type="text" ng-model="insumo.unidad" >
+                       <label>E.g cm,lbr,kg,u</label>
+                   </div>
+                   <div class="field">
+                       <label>Precio de Costo</label>
+
+                       <div class="ui right labeled input">
+
+                           <input class="form-control" type="text" name="precio" ng-model="insumo.precio" >
+                           <div class="ui label">$</div>
+                       </div>
+                   </div>
+                   <div class="field">
+                       <label>Precio de Venta</label>
+                       <div class="ui right labeled input">
+
+                           <input class="form-control" type="text" name="preciov" ng-model="insumo.precio_venta" >
+                           <div class="ui label">$</div>
+                       </div>
+
+
+                   </div>
+
+
+
+                </div>
+                <div class="field">
+
+                    <label>Descripción</label>
+                    <textarea name="info" placeholder="Opcional" ng-model="insumo.info" ></textarea>
+
+
+
+                </div>
+
+
+            </form>
+        </div>
+        <div class="actions">
+            <div class="ui  button" ng-click="cerrar()">Cancelar</div>
+            <div class="ui primary button" ng-click="salvar()">Salvar</div>
+        </div>
+    </div>
+
+</div>
+

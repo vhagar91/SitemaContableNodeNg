@@ -1,0 +1,90 @@
+<div ng-if="!SessionService.getData()">
+    <div data-ng-include src="passwordSrc" ></div>
+    <!-- code to render a large video block-->
+</div>
+
+
+<div ng-if="SessionService.getData()" style="    padding-top: 50px;    padding-left: 50px;    padding-right: 50px;">
+
+
+        <div class="ui piled red segment" ng-init="listaCuentas()">
+
+            <h2 class="ui dividing header">Sumario
+
+                   <a class="ui small right floated primary button" style=" padding: 7px;">Establecer Período</a>
+
+
+            </h2>
+
+
+            <div class="ui two column divided grid">
+                <div class="stretched row">
+                    <div class="column">
+                        <div class="ui orange raised  segment">
+                            <div class="ui top attached label">Activos
+                                <div style="float: right">{{5000|currency}}</div>
+                            </div>
+
+                            <div class="ui list">
+                                <div class="item">Cuentas por Cobrar</div>
+                                <div class="item">Activos</div>
+                                <div class="item">Depreciación Acumulada de Activos</div>
+                            </div>
+
+                            <img>
+                        </div>
+                        <div class="ui orange raised segment">
+                            <div class="ui top attached label">Menos Pasivos
+                                <div style="float: right">{{-5000|currency}}</div>
+                            </div>
+                            <div class="ui list">
+                                <div class="item">Sueldos</div>
+                                <div class="item">Pears</div>
+                                <div class="item">Oranges</div>
+                            </div>
+
+                        </div>
+                        <div class="ui orange raised segment">
+                            <div class="ui top attached label">Patrimonio Neto</div>
+
+
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="ui orange raised segment">
+                            <div class="ui top attached label">Ingresos
+                                <div style="float: right">{{5000|currency}}</div>
+                            </div>
+                            <div class="ui list">
+                                <div ng-repeat="cuenta in cuentasventas" class="item">{{cuenta.nombre}}
+                                    <div style="float: right">{{cuenta.id|currency}}</div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="ui orange raised segment">
+                            <div class="ui top attached label">Menos Gastos
+                                <div style="float: right">{{-5000|currency}}</div>
+                            </div>
+                            <div class="ui list">
+                                <div ng-repeat="cuenta in cuentasgastos" class="item">{{cuenta.nombre}}
+                                    <div style="float: right">{{cuenta.id|currency}}</div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="ui teal inverted raised segment">
+                            <h2 class="ui small header">Neto</h2>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+</div>

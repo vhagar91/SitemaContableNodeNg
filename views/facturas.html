@@ -1,0 +1,252 @@
+<div class="ui pointing secondary menu">
+    <a class="item active" data-tab="tab-activos">Facturación</a>
+    <div class="item right">
+
+        <daterangepciker></daterangepciker>
+
+    </div>
+
+
+</div>
+<div class="ui tab active " data-tab="tab-activos">
+    <!-- Tab Content !-->
+    <div class="ui  " style="padding: 0em 1em 1em 1em ;">
+        <div class="ui small blue inverted top attached menu">
+
+            <div class="ui dropdown icon item">
+                <i class="wrench icon"></i>
+                <div class="menu">
+                    <div class="item">
+                        <i class="dropdown icon"></i>
+                        <span class="text">Facturar</span>
+                        <div class="menu">
+                            <div class="item" ng-click="editar(cliente)" >Servicio</div>
+                            <div class="item" ng-click="editar(cliente)" >Venta</div>
+
+                        </div>
+                    </div>
+
+                    <div class="item">Imprimir</div>
+                    <div class="divider"></div>
+                    <div class="header">
+                        Exportar
+                    </div>
+                    <div class="item"  >
+                        Excel...
+                    </div>
+                    <div class="item">
+                        PDF...
+                    </div>
+                </div>
+            </div>
+            <div class="right menu">
+                <div class="ui right aligned category search item">
+                    <div class="ui inverted icon input">
+                        <input  placeholder="Buscar ..." ng-model="pesquisar" type="text">
+                        <i class="search link icon"></i>
+                    </div>
+                    <div class="results"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ui bottom attached segment" ng-init="listaClientes()">
+
+            <table class="ui blue striped sortable compact celled table"    style="font-size: smaller !important; " >
+                <thead style="font-size: small">
+
+                <tr style="font-family:'Arial Black';">
+                    <th ng-click="sortType ='nombre';sortReverse = !sortReverse">
+
+                        Nombre
+                        <i class="chevron up icon" ng-show="sortType == 'nombre' && !sortReverse" ></i>
+                        <i ng-show="sortType == 'nombre' && sortReverse" class="chevron down icon"></i>
+                    </th>
+                    <th ng-click="sortType ='codigo';sortReverse = !sortReverse">
+
+                        Código
+                        <i ng-show="sortType == 'codigo' && !sortReverse" class="chevron up icon"></i>
+                        <i ng-show="sortType == 'codigo' && sortReverse" class="chevron down icon"></i>
+
+                    </th>
+                    <th ng-click="sortType ='cuenta';sortReverse = !sortReverse">Cuenta
+                        <i ng-show="sortType == 'cuenta' && !sortReverse" class="chevron up icon"></i>
+                        <i ng-show="sortType == 'cuenta' && sortReverse" class="chevron down icon"></i>
+                    </th>
+                    <th ng-click="sortType ='direccion';sortReverse = !sortReverse">Dirección
+                        <i ng-show="sortType == 'direccion' && !sortReverse" class="chevron up icon"></i>
+                        <i ng-show="sortType == 'direccion' && sortReverse" class="chevron down icon"></i></th>
+                    <th ng-click="sortType ='email';sortReverse = !sortReverse">Email
+                        <i ng-show="sortType == 'email' && !sortReverse" class="chevron up icon"></i>
+                        <i ng-show="sortType == 'email' && sortReverse" class="chevron down icon"></i>
+                    </th>
+                    <th ng-click="sortType ='telefono';sortReverse = !sortReverse">Teléfono
+                        <i ng-show="sortType == 'telefono' && !sortReverse" class="chevron up icon"></i>
+                        <i ng-show="sortType == 'telefono' && sortReverse" class="chevron down icon"></i></th>
+                    <th ng-click="sortType ='fecha_firma';sortReverse = !sortReverse">Firmado
+                        <i ng-show="sortType == 'fecha_firma' && !sortReverse" class="chevron up icon"></i>
+                        <i ng-show="sortType == 'fecha_firma' && sortReverse" class="chevron down icon"></i>
+                    </th>
+                    <th ng-click="sortType ='fecha_vencimiento';sortReverse = !sortReverse">Vence
+                        <i ng-show="sortType == 'fecha_vencimiento' && !sortReverse" class="chevron up icon"></i>
+                        <i ng-show="sortType == 'fecha_vencimiento' && sortReverse" class="chevron down icon"></i>
+                    </th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr dir-paginate="cliente in clientes|orderBy:sortType:sortReverse|daterange:start:end:'cliente'|filter:pesquisar|itemsPerPage:10"  ng-class="warningLevel(cliente)" >
+                    <td style="font-weight: bold">{{cliente.nombre}}</td>
+                    <td>{{cliente.codigo}}</td>
+                    <td>{{cliente.cuenta}}</td>
+                    <td>{{cliente.direccion}}</td>
+                    <td>{{cliente.email}}</td>
+                    <td>{{cliente.telefono}}</td>
+                    <td>{{cliente.fecha_firma}}</td>
+                    <td>{{cliente.fecha_vencimiento}}</td>
+                    <td class="collapsing">
+                        <div class="ui mini icon buttons">
+                            <button class="ui mini button" ng-click="editar(cliente)"><i class="glyphicon glyphicon-pencil"></i></button>
+                            <button class="ui mini button" ng-click="excluir(cliente)"><i class="glyphicon glyphicon-trash"></i></button>
+
+                        </div>
+
+                    </td>
+                </tr>
+                </tbody>
+                <tfoot>
+
+                </tfoot>
+
+            </table>
+        </div>
+        <dir-pagination-controls  boundary-links="true" template-url="../views/dirPagination.tpl.html" max-size="5" >
+        </dir-pagination-controls>
+
+
+
+
+
+
+
+    </div>
+</div>
+
+
+<!-- Modal Cadastro e Edição -->
+<div class="ui small modal" id="modalServicio" tabindex="-1" role="dialog">
+
+    <div class="header">
+        Facturar Servicio
+
+    </div>
+    <div class="content">
+        <form name="servicioForm"   class="ui form servicio">
+            <div class="two fields">
+                <div class="field">
+                    <label>Cliente</label>
+                    <div class="ui fluid search dropdown selection">
+                        <i class="dropdown icon"></i>
+                        <input tabindex="0" autocomplete="off" class="search">
+                        <div class="text">Clientes</div>
+                        <select ng-model="factura.id_cliente" name="cliente">
+                            <option selected="selected" value="">Clientes</option>
+                            <option ng-repeat="cliente in clientes track by cliente.id" value="{{cliente.id}}">{{cliente.nombre}}</option>
+
+                        </select>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>N° de factura</label>
+                    <input class="form-control" name="email" type="text" ng-model="cliente.email" >
+                </div>
+
+            </div>
+            <div class="two fields">
+                <div class="field">
+                    <label>Fecha</label>
+                    <input class="form-control" type="text" name="dir" ng-model="cliente.direccion" >
+                </div>
+                <div class="field">
+                    <label>Fecha vencimiento</label>
+                    <input class="form-control" name="cuenta" type="text" ng-model="cliente.cuenta" >
+                </div>
+
+            </div>
+
+            <div class="two fields">
+                <div class="field">
+                    <label>Firmado</label>
+                    <input class="form-control date" type="date"  name="date" ng-model="cliente.fecha_firma" >
+                </div>
+                <div class="field">
+                    <label>Vence</label>
+                    <input class="form-control " type="date" name="date1" ng-model="cliente.fecha_vencimiento" >
+                </div>
+
+            </div>
+            <div class="ui divider"></div>
+            <div class="field">
+                <label>Insumos utilizados</label>
+                <table class="ui basic  table">
+                    <thead>
+                    <tr>
+
+                        <th>Nombre</th>
+                        <th>Cantidad</th>
+                        <th></th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+
+                        <td>John Lilki</td>
+                        <td>September 14, 2013</td>
+                        <td>jhlilk22@yahoo.com</td>
+
+                    </tr>
+
+                    </tbody>
+                    <tfoot class="full-width">
+                    <tr>
+                        <th>
+                            <div class="ui fluid search dropdown selection">
+                                <i class="dropdown icon"></i>
+                                <input tabindex="0" autocomplete="off" class="search">
+                                <div class="text">Insumos</div>
+                                <select ng-model="insumo" name="cliente">
+                                    <option selected="selected" value="">Insumos</option>
+                                    <option ng-repeat="ins in insumos track by ins.id" value="{{ins}}">{{ins.nombre}}</option>
+
+                                </select>
+                            </div>
+                        </th>
+                        <th>
+                            <input ng-if="insumo!=''" style="width: 105px;" class="form-control " placeholder="Cantidad"  type="text" max="5" min="1" name="date1" >
+                        </th>
+
+                        <th colspan="4">
+                            <div class="ui right floated small primary labeled icon button">
+                                <i class="plus icon"></i> Insumo
+                            </div>
+
+                        </th>
+                    </tr>
+                    </tfoot>
+                </table>
+
+            </div>
+
+
+        </form>
+    </div>
+    <div class="actions">
+        <div class="ui  button" ng-click="cerrar()">Cancelar</div>
+        <div class="ui primary button" ng-click="salvar()">Salvar</div>
+    </div>
+</div>
+
+</div>
+

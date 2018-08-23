@@ -1,0 +1,14 @@
+# Bootstrap
+node_modules/*
+
+*/logs/*
+*/cache/*
+tmp/*
+
+# Configuration files
+app/config/parameters.ini
+app/config/parameters.yml
+
+# IDE PHPStorm
+.idea/*
+*.anjuta*

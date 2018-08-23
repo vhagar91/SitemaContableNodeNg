@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Comprobante de Pago</title>
+  <meta charset='utf-8'>
+  <meta name="description" content="AngularJS and Angular Code Example for creating Invoices and Invoicing Application">
+   <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <script type="text/javascript" src="../../js/lib/angular.min.js"></script>
+  <script type="text/javascript" src="../../js/lib/moment.min.js"></script>
+  <script type="text/javascript" src="js/main.js"></script>
+</head>
+<body ng-app="invoicing" ng-controller="comprobanteCtrl" >
+
+  <div class="container" width="800px" id="invoice" >
+  
+    <div class="row">
+      <div class="col-xs-12 heading" style="font-size:30px">
+        COMPROBANTE DE PAGO
+      </div>
+    </div>
+
+    <div class="row infos">
+      <div class="col-xs-6">
+	  
+        <div class="input-container">
+		<label>A:</label>
+		{{datos.trabajador.nombre}}
+		
+		</div>
+        <div class="input-container">
+          <label>Teléfono:</label>
+		{{datos.trabajador.telefono}}</div>
+        <div class="input-container">
+          <label>Email:</label>
+          {{datos.trabajador.email}}</div>
+        
+      </div>
+
+      <div class="col-xs-6 right">
+	  
+        <div class="input-container">
+		{{datos.company.nombre}}
+        <div class="input-container">
+          {{datos.company.email}}</div>
+          <div class="input-container">
+            {{datos.company.telefono}}</div>
+          <div class="input-container">
+            {{datos.company.direccion}}</div>
+      </div>
+      </div>
+    </div>
+    <div class="items-table ">
+      <div class="row header">
+        
+        <div class="col-xs-5">Description</div>
+        
+        <div class="col-xs-7 text-right">Total{{currencySymbol}}</div>
+      </div>
+      <div class="row invoice-item"  ng-animate="'slide-down'">
+        
+        <div class="col-xs-5 input-container">
+          Pago de sueldo
+        </div>
+       
+        <div class="col-xs-7 text-right input-container">
+          {{datos.comprobante.ganancias | currency: currencySymbol}}
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-xs-10 text-right">Pago Total</div>
+        <div class="col-xs-2 text-right">{{datos.comprobante.ganancias | currency: currencySymbol}}</div>
+      </div>
+      <div class="row">
+        <div class="col-xs-10 text-right">Seguridad Social </div>
+        <div class="col-xs-2 text-right">{{datos.comprobante.deduccion | currency: currencySymbol}}</div>
+      </div>
+      <div class="row">
+        <div class="col-xs-10 text-right">Pago Neto:</div>
+        <div class="col-xs-2 text-right">{{datos.comprobante.ganancias-datos.comprobante.deduccion | currency: currencySymbol}}</div>
+      </div>
+    </div>
+    <div class="sing modal-footer">
+      <div class="fecha " style="float: left">
+        Fecha:{{datos.comprobante.fecha}}
+      </div>
+
+      <div class="firma" style="float: right">
+      Firma:________________
+      </div>
+    </div>
+    <div class="row noPrint actions">
+	<div class="panel panel-default">
+
+    <div class="panel-heading">
+
+	<table style="border-collapse: separate">
+	<tr>
+	<td>
+	<span class="header">Comprobante</span>
+	</td>
+	<td style="border-right: 1px solid #ddd; padding: 0px 10px">
+
+<button  ng-click="printInfo()" class="btn btn-default btn-sm" style="font-weight: bold">Imprimir</button>
+
+
+
+</td>
+<td style="border-left: 1px solid #fff">
+<button class="btn btn-default btn-sm" style="font-weight: bold; margin-left: 10px"
+data-toggle="modal" data-target="#email-modal">Correo electrónico</button>
+</td>
+</tr>
+</table>
+</div>
+      
+    </div>
+  </div>
+
+ </div>
+
+ </body>
+</html>

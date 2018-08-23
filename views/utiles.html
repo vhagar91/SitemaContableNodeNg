@@ -1,0 +1,261 @@
+
+
+<div class="ui pointing secondary menu">
+    <a class="item active" data-tab="tab-activos">Útiles y Herramientas</a>
+    <div class="item right">
+        <i class="glyphicon refresh icon" ng-click="end = undefined;star=undefined;pesquisar=undefined"></i>
+        <daterangepciker></daterangepciker>
+    </div>
+
+
+
+</div>
+<div class="ui tab active " data-tab="tab-activos">
+    <!-- Tab Content !-->
+
+    <div class="ui  " style="padding: 0em 1em 1em 1em ;">
+        <div class="ui small blue inverted top attached menu">
+
+            <div class="ui dropdown icon item">
+                <i class="wrench icon"></i>
+                <div class="menu">
+                    <div class="item">
+                        <i class="dropdown icon"></i>
+                        <span class="text">Nuevo</span>
+                        <div class="menu">
+                            <div class="item" ng-click="editar(herramienta)" >Herramienta</div>
+
+                        </div>
+                    </div>
+
+                    <div class="item">Imprimir</div>
+                    <div class="divider"></div>
+                    <div class="header">
+                        Exportar
+                    </div>
+                    <div class="item">
+                        Excel...
+                    </div>
+                    <div class="item">
+                        PDF...
+                    </div>
+                </div>
+            </div>
+            <div class="right menu">
+                <div class="ui right aligned category search item">
+                    <div class="ui inverted icon input">
+                        <input  placeholder="Buscar ..." ng-model="pesquisar" type="text">
+                        <i class="search link icon"></i>
+                    </div>
+                    <div class="results"></div>
+                </div>
+            </div>
+        </div>
+        <div class="ui bottom attached segment">
+            <table class="ui blue sortable celled table" ng-init="listaUtiles()" style="font-size: smaller !important; " >
+                <thead>
+
+                <tr style="font-family:'Arial Black';" >
+                    <th ng-click="sortType ='codigo';sortReverse = !sortReverse">
+
+                        Herramienta
+                        <i class="chevron up icon" ng-show="sortType == 'codigo' && !sortReverse" ></i>
+                        <i ng-show="sortType == 'codigo' && sortReverse" class="chevron down icon"></i>
+                    </th>
+
+
+                    <th ng-click="sortType ='responsable';sortReverse = !sortReverse">
+
+                        Responsable
+                        <i class="chevron up icon" ng-show="sortType == 'responsable' && !sortReverse" ></i>
+                        <i ng-show="sortType == 'responsable' && sortReverse" class="chevron down icon"></i>
+                    </th>
+
+
+
+                    <th>E Técnicas</th>
+
+                    <th>Costo($)</th>
+                    <th>Fecha de Compra</th>
+                    <th>Estado</th>
+
+                    <th colspan="2"></th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr style="font-size:medium" dir-paginate="util in utiles|orderBy:sortType:sortReverse|daterange:start:end:'util'|filter:pesquisar|itemsPerPage:10" pagination-id="act" ng-class="warningLevel(util)" >
+
+                    <td style="font-weight: bold  ">
+                        <h4 class="ui image header">
+                            <img   local-src="{{util.foto}}"  class="ui smallest rounded image">
+
+                            <div class="content">
+                                {{util.nombre}}
+
+                                <div class="sub header">{{util.codigo}}
+                                </div>
+                            </div>
+                        </h4></td>
+
+                    <td>{{util.name}}</td>
+
+                    <td>{{util.e_tecnicas}}</td>
+
+                    <td>{{util.costo| currency}}</td>
+                    <td>{{util.f_compra}}</td>
+                    <td style="width:140px; text-align: center">
+                        <div class="ui label" ng-class="warningLevel(util.f_mant)" style="width: inherit">
+                            {{mantenimientoEn(util.f_mant)}}.
+
+                        </div>
+
+
+                    </td>
+
+                    <td class="collapsing">
+                        <div class="item" ng-click="editar(util)">
+                            <i class="popup glyphicon glyphicon-edit" data-content="Editar"></i>
+                        </div>
+                    </td>
+                    <td class="collapsing">
+                        <div class="item" ng-click="excluir(util)">
+                            <i class="popup glyphicon glyphicon-trash" data-content="Eliminar"></i>
+                        </div>
+                    </td>
+
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+
+                    <th colspan="10" class="text-center">
+                        <dir-pagination-controls pagination-id="act" boundary-links="true" template-url="../views/dirPagination.tpl.html" max-size="5" >
+                        </dir-pagination-controls>
+                    </th>
+                </tr>
+                </tfoot>
+
+            </table>
+
+        </div>
+
+
+
+
+
+
+    </div>
+</div>
+
+
+
+<!-- Modal Cadastro e Edição -->
+<div class="ui small modal" id="modalUtil" tabindex="-1" role="dialog">
+
+    <div class="header">
+        Utiles y Herramientas
+
+    </div>
+    <div class="content" >
+        <form name="utilForm"   class="ui form util">
+
+            <div class="two fields">
+                <div class="field">
+                    <label>Nombre</label>
+                    <input class="form-control" name="nombre" type="text" ng-model="util.nombre" >
+                </div>
+                <div class="field">
+                    <label>Código</label>
+                    <input class="form-control" name="codigo" type="text" ng-model="util.codigo" >
+                </div>
+
+            </div>
+            <div class="two fields">
+                <div class="field">
+                    <label>Costo</label>
+                    <div class="ui right labeled input">
+
+                        <input class="form-control" type="text" name="costo" ng-model="util.costo" >
+                        <div class="ui label">$</div>
+                    </div>
+
+                </div>
+                <div class="field">
+                    <label>Fecha de Compra</label>
+                    <input class="form-control" name="f_compra" type="date" ng-model="util.f_compra" >
+                </div>
+
+            </div>
+            <div class="two fields">
+                <div class="field">
+                    <label>Fecha de Mantenimiento</label>
+                    <input class="form-control" type="date" name="f_mant" ng-model="util.f_mant" >
+                </div>
+                <div class="field">
+                    <label>Responsable</label>
+                    <div class="ui fluid search dropdown selection">
+                        <i class="dropdown icon"></i>
+                        <input tabindex="0" autocomplete="off" class="search">
+                        <div class="text">Empleados</div>
+                        <select ng-model="util.id_trabajador" name="responsable">
+                            <option selected="selected" value="">Empleados</option>
+                            <option ng-repeat="trabajador in trabajadores track by trabajador.id" value="{{trabajador.id}}">{{trabajador.nombre}}</option>
+
+                        </select>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="field">
+
+
+                <label for="selectPhotos" class="ui icon button left floated label">
+                    <i class="attach icon"></i>
+                    Selecionar Foto {{image.file.name}}</label>
+                <input type="file"  image="image" id="selectPhotos" name="file" style="display:none">
+
+            </div>
+
+                <div class="field">
+
+                    <label>Especificaciones Técnicas</label>
+                    <textarea  name="descripcion" ng-model="util.e_tecnicas" ></textarea>
+
+
+
+
+           </div>
+
+
+
+
+
+
+
+        </form>
+    </div>
+    <div class="actions">
+        <div class="ui  button" ng-click="cerrar()">Cancelar</div>
+        <div class="ui primary button" ng-click="salvar()">Salvar</div>
+    </div>
+</div>
+
+
+<script>
+    $(document)
+            .ready(function() {
+
+                $('.ui.pointing.secondary.menu .item').tab();
+
+
+
+            })
+    ;
+</script>
+<!-- Modal Cadastro e Edição -->
+
+
+
+

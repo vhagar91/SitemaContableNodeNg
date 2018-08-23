@@ -1,0 +1,418 @@
+
+<div class="ui pointing secondary menu">
+    <a class="item active" data-tab="tab-activos">Empleados</a>
+    <a class="item" data-tab="tab-inactivos">Bajas</a>
+    <div class="item right">
+        <i class="glyphicon refresh icon" ng-click="end = undefined;star=undefined;pesquisar=undefined;buscar=undefined"></i>
+        <daterangepciker></daterangepciker>
+    </div>
+
+</div>
+<div class="ui tab active " data-tab="tab-activos">
+    <!-- Tab Content !-->
+
+    <div class="ui  " style="padding: 0em 1em 1em 1em ;">
+        <div class="ui small blue inverted top attached menu">
+
+            <div class="ui dropdown icon item">
+                <i class="wrench icon"></i>
+                <div class="menu">
+                    <div class="item">
+                        <i class="dropdown icon"></i>
+                        <span class="text">Nuevo</span>
+                        <div class="menu">
+                            <div class="item" ng-click="editar(trabajador)" >Trabajador</div>
+
+                        </div>
+                    </div>
+
+                    <div class="item">Imprimir</div>
+                    <div class="divider"></div>
+                    <div class="header">
+                        Exportar
+                    </div>
+                    <div class="item">
+                        Excel...
+                    </div>
+                    <div class="item">
+                        PDF...
+                    </div>
+                </div>
+            </div>
+            <div class="right menu">
+                <div class="ui right aligned category search item">
+                    <div class="ui inverted icon input">
+                        <input  placeholder="Buscar ..." ng-model="pesquisar" type="text">
+                        <i class="search link icon"></i>
+                    </div>
+                    <div class="results"></div>
+                </div>
+            </div>
+        </div>
+        <div class="ui bottom attached segment">
+            <table class="ui blue striped sortable compact  celled table" ng-init="listaTrabajador()" style="font-size: smaller !important; " >
+                <thead>
+
+                <tr style="font-family:'Arial Black';">
+
+                    <th ng-click="sortType ='nombre';sortReverse = !sortReverse">
+
+                        Nombre
+                        <i class="chevron up icon" ng-show="sortType == 'nombre' && !sortReverse" ></i>
+                        <i ng-show="sortType == 'nombre' && sortReverse" class="chevron down icon"></i>
+                    </th>
+                    <th ng-click="sortType ='telefono';sortReverse = !sortReverse">
+
+                        Telefono
+                        <i class="chevron up icon" ng-show="sortType == 'telefono' && !sortReverse" ></i>
+                        <i ng-show="sortType == 'telefono' && sortReverse" class="chevron down icon"></i>
+                    </th>
+                    <th ng-click="sortType ='Email';sortReverse = !sortReverse">
+
+                        Email
+                        <i class="chevron up icon" ng-show="sortType == 'Email' && !sortReverse" ></i>
+                        <i ng-show="sortType == 'Email' && sortReverse" class="chevron down icon"></i>
+                    </th>
+                    <th ng-click="sortType ='f_entrada';sortReverse = !sortReverse">
+
+                        Fecha Entrada
+                        <i class="chevron up icon" ng-show="sortType == 'f_entrada' && !sortReverse" ></i>
+                        <i ng-show="sortType == 'f_entrada' && sortReverse" class="chevron down icon"></i>
+                    </th>
+
+
+
+
+                    <th>Vacaciones Acumuladas(D)</th>
+                    <th>Monto a Pagar ($)</th>
+
+
+
+                    <th colspan="3"></th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr dir-paginate="trabajador in trabajadores|orderBy:sortType:sortReverse|daterange:start:end:'trabajador'|filter:pesquisar|itemsPerPage:20" pagination-id="t" >
+                    <td style="font-weight: bold">{{trabajador.nombre}}</td>
+                    <td>{{trabajador.telefono}}</td>
+                    <td>{{trabajador.email}}</td>
+                    <td>{{trabajador.f_entrada}}</td>
+                    <td>{{vacaciones(trabajador)}}</td>
+                    <td>{{aPagar(trabajador) | currency}}</td>
+
+                    <td class="collapsing">
+                        <div class="item" ng-click="editar(trabajador)">
+                            <i class="popup glyphicon glyphicon-edit" data-content="Editar"></i>
+                        </div>
+                    </td>
+                    <td class="collapsing">
+                        <div class="item" ng-click="showHerramientas(trabajador)">
+                            <i class="popup glyphicon glyphicon-zoom-in" data-content="Herramientas"></i>
+                        </div>
+                    </td>
+                    <td class="collapsing">
+                        <div class="item" ng-click="showdarbaja(trabajador)">
+                            <i class="popup glyphicon glyphicon-arrow-down" data-content="Dar Baja"></i>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <b> Total a Pagar: </b> {{ trabajadores | sumFilter | currency }}
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+
+                    <th colspan="11" class="text-center">
+                        <dir-pagination-controls pagination-id="t" boundary-links="true" template-url="../views/dirPagination.tpl.html" max-size="5" >
+                        </dir-pagination-controls>
+                    </th>
+                </tr>
+                </tfoot>
+
+            </table>
+
+
+
+        </div>
+
+
+
+
+
+    </div>
+</div>
+<div class="ui tab  " data-tab="tab-inactivos">
+    <!-- Tab Content !-->
+
+    <div class="ui  " style="padding: 0em 1em 1em 1em ;">
+        <div class="ui small blue inverted top attached menu">
+
+            <div class="ui dropdown icon item">
+                <i class="wrench icon"></i>
+                <div class="menu">
+                    <div class="item">
+                        <i class="dropdown icon"></i>
+                        <span class="text">Nuevo</span>
+                        <div class="menu">
+                            <div class="item" ng-click="editar(trabajador)" >Trabajador</div>
+
+                        </div>
+                    </div>
+
+                    <div class="item">Imprimir</div>
+                    <div class="divider"></div>
+                    <div class="header">
+                        Exportar
+                    </div>
+                    <div class="item">
+                        Excel...
+                    </div>
+                    <div class="item">
+                        PDF...
+                    </div>
+                </div>
+            </div>
+            <div class="right menu">
+                <div class="ui right aligned category search item">
+                    <div class="ui inverted icon input">
+                        <input  placeholder="Buscar ..." ng-model="buscar" type="text">
+                        <i class="search link icon"></i>
+                    </div>
+                    <div class="results"></div>
+                </div>
+            </div>
+        </div>
+        <div class="ui bottom attached segment">
+            <table class="ui blue striped sortable compact  celled table" ng-init="listaTrabajadorBaja()" style="font-size: smaller !important; " >
+                <thead>
+
+                <tr style="font-family:'Arial Black';">
+
+                    <th ng-click="sortType ='nombre';sortReverse = !sortReverse">
+
+                        Nombre
+                        <i class="chevron up icon" ng-show="sortType == 'nombre' && !sortReverse" ></i>
+                        <i ng-show="sortType == 'nombre' && sortReverse" class="chevron down icon"></i>
+                    </th>
+                    <th ng-click="sortType ='Telefono';sortReverse = !sortReverse">
+
+                        Telefono
+                        <i class="chevron up icon" ng-show="sortType == 'Telefono' && !sortReverse" ></i>
+                        <i ng-show="sortType == 'Telefono' && sortReverse" class="chevron down icon"></i>
+                    </th>
+                    <th ng-click="sortType ='Email';sortReverse = !sortReverse">
+
+                        Email
+                        <i class="chevron up icon" ng-show="sortType == 'Email' && !sortReverse" ></i>
+                        <i ng-show="sortType == 'Email' && sortReverse" class="chevron down icon"></i>
+                    </th>
+                    <th ng-click="sortType ='f_entrada';sortReverse = !sortReverse">
+
+                        Fecha Entrada
+                        <i class="chevron up icon" ng-show="sortType == 'f_entrada' && !sortReverse" ></i>
+                        <i ng-show="sortType == 'f_entrada' && sortReverse" class="chevron down icon"></i>
+                    </th>
+                    <th ng-click="sortType ='f_salida';sortReverse = !sortReverse">
+
+                        Fecha Salida
+                        <i class="chevron up icon" ng-show="sortType == 'f_salida' && !sortReverse" ></i>
+                        <i ng-show="sortType == 'f_salida' && sortReverse" class="chevron down icon"></i>
+                    </th>
+
+
+                    <th>Razón de Baja</th>
+
+
+
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr dir-paginate="trabajador in trabajadoresbaja|orderBy:sortType:sortReverse|daterange:start:end:'trabajador'|filter:buscar|itemsPerPage:20 " pagination-id="tb" >
+                    <td style="font-weight: bold">{{trabajador.nombre}}</td>
+                    <td>{{trabajador.telefono}}</td>
+                    <td>{{trabajador.email}}</td>
+                    <td>{{trabajador.f_entrada}}</td>
+                    <td>{{trabajador.f_salida}}</td>
+                    <td>{{trabajador.r_salida}}</td>
+
+
+                    <td class="collapsing">
+                        <div class="item" ng-click="delete(trabajador)" >
+                            <i class="popup glyphicon glyphicon-trash" data-content="Eliminar"></i>
+                        </div>
+                    </td>
+                </tr>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+
+                    <th colspan="10" class="text-center">
+                        <dir-pagination-controls pagination-id="tb" boundary-links="true" template-url="../views/dirPagination.tpl.html" max-size="5" >
+                        </dir-pagination-controls>
+                    </th>
+                </tr>
+                </tfoot>
+
+            </table>
+
+        </div>
+
+
+
+
+
+    </div>
+
+</div>
+
+
+<!-- Modal Cadastro e Edição -->
+<div class="ui small modal" id="modalTrabajador" tabindex="-1" role="dialog">
+
+    <div class="header">
+        Empleado
+
+    </div>
+    <div class="content">
+        <form name="trabajadorForm"   class="ui form trabajador">
+            <div class="two fields">
+                <div class="field">
+                    <label>Nombre</label>
+                    <input class="form-control" name="name" type="text" ng-model="trabajador.nombre" >
+                </div>
+                <div class="field">
+                    <label>Email</label>
+                    <input class="form-control" placeholder="Opcional" name="email" type="text" ng-model="trabajador.email" >
+                </div>
+
+            </div>
+            <div class="two fields">
+                <div class="field">
+                    <label>Telefono</label>
+                    <input class="form-control" placeholder="Opcional" type="text" name="telefono" ng-model="trabajador.telefono" >
+                </div>
+                <div class="field">
+                    <label>Móvil</label>
+                    <input class="form-control" placeholder="Opcional" name="movil" type="text" ng-model="trabajador.movil" >
+                </div>
+
+            </div>
+            <div class="two fields">
+                <div class="field">
+                    <label>Entrada</label>
+                    <input class="form-control" name="f_entrada" type="date" ng-model="trabajador.f_entrada" >
+                </div>
+
+
+            </div>
+            <div class="field">
+
+                <label>Dirección</label>
+                <textarea rows="2" name="direccion" placeholder="Opcional" ng-model="trabajador.direccion" ></textarea>
+
+
+
+
+            </div>
+            <div class="field">
+
+                <label>Información Adicional</label>
+                <textarea rows="4" name="info" placeholder="Opcional" ng-model="trabajador.info" ></textarea>
+
+
+
+
+            </div>
+
+
+
+
+        </form>
+    </div>
+    <div class="actions">
+        <div class="ui  button" ng-click="cerrar()">Cancelar</div>
+        <div class="ui primary button" ng-click="salvar()">Salvar</div>
+    </div>
+</div>
+
+<div class="ui small modal" id="modalDarBaja" tabindex="-1" role="dialog">
+
+    <div class="header">
+        Dar de baja
+
+    </div>
+    <div class="content">
+        <form name="darBajaForm"   class="ui form darbaja">
+            <div class="two fields">
+                <div class="field">
+                    <label>Nombre</label>
+                    <input class="form-control" name="name" type="text" disabled="disabled" ng-model="trabajador.nombre" >
+                </div>
+                <div class="field">
+                    <label>Salida</label>
+                    <input class="form-control" name="f_salida" type="date" ng-model="trabajador.f_salida" >
+                </div>
+
+            </div>
+            <div class="two fields">
+                <div class="field">
+                    <label>Razón de salida</label>
+                    <input class="form-control" type="text" name="r_salida" ng-model="trabajador.r_salida" >
+                </div>
+
+
+            </div>
+
+
+
+
+        </form>
+    </div>
+    <div class="actions">
+        <div class="ui  button" ng-click="cerrarbaja()">Cancelar</div>
+        <div class="ui primary button" ng-click="darbaja()">Salvar</div>
+    </div>
+</div>
+
+<div class="ui small modal" id="modalHerramientas" tabindex="-1" role="dialog">
+    <div class="header">Herramientas asignadas a {{trabajador.nombre}}</div>
+
+    <div class="content">
+        <div class="ui list" >
+            <div class="item" dir-paginate="herramienta in herramientas|itemsPerPage:3" pagination-id="h">
+                <img class="ui small rounded image" local-src="{{herramienta.foto}}">
+                <div class="content">
+                    <a class="header">{{herramienta.nombre}}</a>
+                    <div class="description">{{herramienta.e_tecnicas}} .</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="actions">
+        <dir-pagination-controls  pagination-id="h" boundary-links="true" template-url="../views/dirPagination.tpl.html" max-size="5">
+        </dir-pagination-controls>
+        <div class="ui  button" ng-click="cerrarherra()">Cancelar</div>
+
+    </div>
+</div>
+<script>
+    $(document)
+            .ready(function() {
+
+                $('.ui.pointing.secondary.menu .item').tab();
+
+
+
+
+
+
+
+            })
+    ;
+</script>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Factura</title>
+  <meta charset='utf-8'>
+
+   <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <script type="text/javascript" src="../../js/lib/angular.min.js"></script>
+    <script type="text/javascript" src="../../js/lib/moment.min.js"></script>
+  <script type="text/javascript" src="js/main.js"></script>
+</head>
+<body ng-app="invoicing" ng-controller="InvoiceCtrl" >
+  <div class="container" width="800px" id="invoice" >
+    <div class="row">
+      <div class="col-xs-12 heading" style="font-size:30px">
+        FACTURA
+      </div>
+    </div>
+    <div class="row branding">
+      <div class="col-xs-6">
+        <div class="invoice-number-container">
+          <label >Factura #</label>{{datos.factura.id}}
+        </div>
+          <div class="invoice-number-container">
+              <label >Orden #</label>{{datos.factura.orden}}
+          </div>
+      </div>
+      <div class="col-xs-6 logo-container">
+        <input type="file" id="imgInp" />
+        <img ng-hide="logoRemoved" id="company_logo" local-src="{{ logo }}" alt="your image" width="300" />
+          <div>
+              <div class="noPrint" >
+                  <a ng-click="editLogo()" href >Edit Logo</a>
+                  <a ng-click="toggleLogo()" id="remove_logo" href >{{ logoRemoved ? 'Show' : 'Hide' }} logo</a>
+              </div>
+          </div>
+      </div>
+    </div>
+    <div class="row infos">
+      <div class="col-xs-6">
+
+        <div class="input-container">
+          <label>Facturado A:</label>
+          {{datos.cliente.nombre}}
+
+        </div>
+          <div class="input-container">
+              <label>Email:</label>
+              {{datos.cliente.email}}</div>
+          <div class="input-container">
+              <label>Telefono:</label>
+              {{datos.cliente.telefono}}</div>
+          <div class="input-container">
+              <label>Dirección:</label>
+              {{datos.cliente.direccion}}</div>
+
+      </div>
+
+      <div class="col-xs-6 right">
+
+        <div class="input-container">
+          {{datos.company.nombre}}
+          <div class="input-container">
+            {{datos.company.email}}</div>
+          <div class="input-container">
+            {{datos.company.telefono}}</div>
+          <div class="input-container">
+            {{datos.company.direccion}}</div>
+        </div>
+      </div>
+    </div>
+      <table class="table table-bordered table-inverse">
+          <thead>
+          <tr>
+
+              <th>NO.Cliente: {{datos.cliente.id}}</th>
+              <th colspan="2">Codigo REU: {{datos.cliente.codigo}}</th>
+              <th>Cuenta: {{datos.cliente.cuenta}}</th>
+          </tr>
+          <tr>
+
+              <th colspan="4" ><div style="text-align: center;padding-bottom: inherit;">Servicio:{{datos.factura.service}}</div></th>
+
+          </tr>
+          <tr>
+              <th>Mano de Obra: {{datos.factura.mano_obra|currency}}</th>
+              <th>Insumos: {{datos.factura.total|currency}}</th>
+              <th>Impuesto: {{datos.factura.tasa_retencion}} %</th>
+              <th>Total: {{datos.total|currency}} </th>
+          </tr>
+          <tr>
+              <th colspan="4" ><div style="text-align: center;padding-bottom: inherit;">Observaciones:
+                  <div style="text-align: -webkit-auto; font-family: -webkit-body;">
+                  {{datos.factura.info}}
+                  </div>
+              </div>
+
+              </th>
+
+          </tr>
+
+          </thead>
+
+      </table>
+
+     <div class="sing modal-footer">
+          <div class="fecha " style="float: left">
+              Fecha:{{datos.factura.fecha}}
+          </div>
+
+          <div class="firma" style="float: right">
+              Firma:________________
+          </div>
+      </div>
+    <div class="row noPrint actions">
+	<div class="panel panel-default">
+
+    <div class="panel-heading">
+
+	<table style="border-collapse: separate">
+	<tr>
+	<td>
+	<span class="header">Factura</span>
+	</td>
+	<td style="border-right: 1px solid #ddd; padding: 0px 10px">
+
+<button ng-show="printMode" ng-click="printInfo()" class="btn btn-default btn-sm" style="font-weight: bold" 
+>Imprimir</button>
+
+
+
+</td>
+<td style="border-left: 1px solid #fff">
+<button class="btn btn-default btn-sm" style="font-weight: bold; margin-left: 10px"
+data-toggle="modal" data-target="#email-modal">Correo electrónico</button>
+</td>
+</tr>
+</table>
+</div>
+      
+    </div>
+  </div>
+
+ </div></body>
+</html>
